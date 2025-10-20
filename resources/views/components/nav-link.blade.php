@@ -1,9 +1,11 @@
 @php
   $currentRoute = $_SERVER['REQUEST_URI'];
+  $currentPath = parse_url($currentRoute, PHP_URL_PATH); // extract path only, ignoring ?page=1
+
   $current = "bg-gray-900 text-white";
   $default = "text-gray-300 hover:bg-white/5 hover:text-white";
   $href = $attributes->get('href');
-  $active = $currentRoute === $href;
+  $active = $currentPath === parse_url($href, PHP_URL_PATH);
 
 
  @endphp

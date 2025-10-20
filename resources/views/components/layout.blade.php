@@ -36,6 +36,9 @@
                 <x-nav-link href="/" aria-current="page">Home</x-nav-link>
                 <x-nav-link href="/about" aria-current="page">About</x-nav-link>
                 <x-nav-link href="/contact" aria-current="page">Contact</x-nav-link>
+                <x-nav-link href="/comments" aria-current="page">Comments</x-nav-link>
+                <x-nav-link href="/blog" aria-current="page">Posts</x-nav-link>
+                <x-nav-link href="/tags" aria-current="page">Tags</x-nav-link>
               </div>
             </div>
           </div>
@@ -148,7 +151,7 @@
 
     <header class="relative bg-white shadow-sm">
       <div class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
-        <h1 class="text-3xl font-bold tracking-tight text-gray-900">{{ $title }}</h1>
+        <h1 class="text-3xl font-bold tracking-tight text-gray-900">{{ $title ?? 'Default Title' }}</h1>
       </div>
     </header>
     <main>
