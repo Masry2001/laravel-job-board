@@ -33,6 +33,9 @@ class Post extends Model
         'id',
     ];
 
+
+
+
     public function comments()
     {
         return $this->hasMany(Comment::class, 'post_id', 'id');
