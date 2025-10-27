@@ -7,7 +7,7 @@ use App\Http\Controllers\api\version1\TagApiController;
 
 //Basically, Postman helps you test your server endpoints without building a frontend.
 
-Route::prefix('version1')->group(function () {
+Route::prefix('version1')->as('api.')->group(function () {
   // Blog Routes
   Route::controller(PostApiController::class)->group(function () {
     Route::get('/posts', 'index')->name('posts.index');

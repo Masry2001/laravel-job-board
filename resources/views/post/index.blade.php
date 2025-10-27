@@ -3,6 +3,11 @@
 
   <h3 class="text-3xl">Blog Page</h3>
   <hr class="my-4">
+  @if (session('success'))
+    <h3 class="text-2xl text-green-800 mb-4 bg-green-50 px-3 py-2">
+      {{ session('success') }}
+    </h3>
+  @endif
   @foreach ($posts as $post)
     <div class="flex items-center mb-4">
       <a href="/blog/{{ $post->id }}" class="text-blue-500 hover:underline">

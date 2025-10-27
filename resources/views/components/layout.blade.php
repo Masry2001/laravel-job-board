@@ -1,3 +1,5 @@
+@props(['title' => 'Default Title', 'post' => null])
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -151,9 +153,31 @@
 
     <header class="relative bg-white shadow-sm">
       <div class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
-        <h1 class="text-3xl font-bold tracking-tight text-gray-900">{{ $title ?? 'Default Title' }}</h1>
+        <div class="flex justify-between items-center">
+          <h1 class="text-3xl font-bold tracking-tight text-gray-900">{{ $title }}</h1>
+          <div>
+            @if (Route::is('blog.index'))
+              <a href="{{ route('blog.create') }}"
+                class="inline-flex items-center px-4 py-2 text-sm font-semibold text-white bg-indigo-600 rounded-md hover:bg-indigo-500 transition-colors duration-300">
+                Create Post
+              </a>
+            @endif
+
+            @if (Route::is('blog.show') && $post)
+
+
+              <x-action-link href="{{ route('blog.edit', $post->id) }}" color="indigo" text="Edit Post" />
+
+              <x-form-delete-btn action="{{ route('blog.destroy', $post->id) }}" text="Delete Post"
+                confirmMessage="Do You Want To Delete This Post" />
+            @endif
+          </div>
+
+        </div>
       </div>
     </header>
+
+
     <main>
       <div class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
         <!-- Your content -->
