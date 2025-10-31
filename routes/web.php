@@ -17,16 +17,16 @@ Route::get('/contact', ContactController::class)->name('contact');
 
 
 // Blog Routes
-// Route::controller(PostController::class)->group(function () {
-//   Route::get('/blog', 'index')->name('blog.index');
-//   Route::get('/blog/create', 'create')->name('blog.create');
-//   Route::post('/blog', 'store')->name('blog.store');
-//   Route::get('/blog/{post}', 'show')->name('blog.show');
-//   Route::get('/blog/{post}/edit', 'edit')->name('blog.edit');
-//   Route::put('/blog/{post}', 'update')->name('blog.update');
-//   Route::delete('/blog/{post}', 'destroy')->name('blog.destroy');
-// });
-Route::resource('blog', PostController::class)->parameters(['blog' => 'post'])->middleware(['auth', 'verified']);
+Route::controller(PostController::class)->group(function () {
+  Route::get('/blog', 'index')->name('blog.index')->middleware(['auth', 'verified']);
+  Route::get('/blog/create', 'create')->name('blog.create')->middleware(['auth', 'verified', 'OnlyAdmins']);
+  Route::post('/blog', 'store')->name('blog.store')->middleware(['auth', 'verified', 'OnlyAdmins']);
+  Route::get('/blog/{post}', 'show')->name('blog.show')->middleware(['auth', 'verified']);
+  Route::get('/blog/{post}/edit', 'edit')->name('blog.edit')->middleware(['auth', 'verified', 'OnlyAdmins']);
+  Route::put('/blog/{post}', 'update')->name('blog.update')->middleware(['auth', 'verified', 'OnlyAdmins']);
+  Route::delete('/blog/{post}', 'destroy')->name('blog.destroy')->middleware(['auth', 'verified', 'OnlyAdmins']);
+});
+//Route::resource('blog', PostController::class)->parameters(['blog' => 'post'])->middleware(['auth', 'verified']);
 
 Route::middleware(['auth', 'verified', 'OnlyAdmins'])
   ->group(function () {
@@ -68,6 +68,9 @@ Route::resource('comments', CommentController::class)->middleware(['auth', 'veri
 Route::resource('tags', TagController::class)->middleware(['auth', 'verified']);
 
 
+Route::get('/dashboard', function () {
+  return view('dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
 
 
 

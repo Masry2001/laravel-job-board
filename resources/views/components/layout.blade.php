@@ -8,10 +8,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>{{ $title ?? 'Document' }}</title>
   <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-
+  @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
-<body>
+<body class="bg-gray-100">
 
   <div class="min-h-full">
     <nav class="bg-gray-800">
@@ -44,7 +44,7 @@
                 <nav class="flex items-center justify-end gap-4">
                   @auth
 
-                    <a href="{{ url('#') }}"
+                    <a href="{{ route('profile.edit') }}"
                       class="inline-block px-5 py-1.5 dark:text-[#EDEDEC] border-[#19140035] hover:border-[#1915014a] border text-[#1b1b18] dark:border-[#3E3E3A] dark:hover:border-[#62605b] rounded-sm text-sm leading-normal">
                       {{ Auth::user()->name }}
                     </a>
@@ -52,8 +52,9 @@
                     <form method="POST" action="{{ route('logout') }}">
                       @csrf
 
-                      <x-dropdown-link :href="route('logout')" onclick="event.preventDefault();
-                                                        this.closest('form').submit();">
+                      <x-dropdown-link :href="route('logout')"
+                        onclick="event.preventDefault();
+                                                                                                                                                this.closest('form').submit();">
                         {{ __('Log Out') }}
                       </x-dropdown-link>
                     </form>
@@ -181,7 +182,7 @@
       </div>
     </main>
   </div>
-
+  @stack('modals')
 </body>
 
 </html>

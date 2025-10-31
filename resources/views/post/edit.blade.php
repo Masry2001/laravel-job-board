@@ -21,7 +21,7 @@
 
           <!-- body -->
           <div class="col-span-full">
-            <x-form-textarea name="body" label="Content" inputId="body"
+            <x-form-textarea name="body" label="Content" inputId="body" :value="$post->body"
               description="Write a few sentences about the post." />
           </div>
 
