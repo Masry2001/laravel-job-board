@@ -7,13 +7,13 @@ use App\Http\Controllers\web\AboutController;
 use App\Http\Controllers\web\ContactController;
 use App\Http\Controllers\web\CommentController;
 use App\Http\Controllers\web\TagController;
-
+use App\Http\Controllers\ProfileController;
 //Basically, Postman helps you test your server endpoints without building a frontend.
 
 
-Route::get('/', IndexController::class);
-Route::get('/about', AboutController::class);
-Route::get('/contact', ContactController::class);
+Route::get('/', IndexController::class)->name('home');
+Route::get('/about', AboutController::class)->name('about');
+Route::get('/contact', ContactController::class)->name('contact');
 
 
 // Blog Routes
@@ -26,7 +26,13 @@ Route::get('/contact', ContactController::class);
 //   Route::put('/blog/{post}', 'update')->name('blog.update');
 //   Route::delete('/blog/{post}', 'destroy')->name('blog.destroy');
 // });
-Route::resource('blog', PostController::class)->parameters(['blog' => 'post']);
+Route::resource('blog', PostController::class)->parameters(['blog' => 'post'])->middleware(['auth', 'verified']);
+
+Route::middleware(['auth', 'verified', 'OnlyAdmins'])
+  ->group(function () {
+    Route::resource('blog', PostController::class)
+      ->only(['create', 'store', 'edit', 'update', 'destroy']);
+  });
 // this will make the route model binding use 'post' instead of 'blog' for the {post} parameter
 // /blog/{post} instead of /blog/{blog}
 
@@ -41,7 +47,7 @@ Route::resource('blog', PostController::class)->parameters(['blog' => 'post']);
 //   Route::put('/comments/{comment}', 'update')->name('comments.update');
 //   Route::delete('/comments/{comment}', 'destroy')->name('comments.destroy');
 // });
-Route::resource('comments', CommentController::class);
+Route::resource('comments', CommentController::class)->middleware(['auth', 'verified']);
 
 
 // Tag Routes
@@ -59,4 +65,19 @@ Route::resource('comments', CommentController::class);
 
 
 // });
-Route::resource('tags', TagController::class);
+Route::resource('tags', TagController::class)->middleware(['auth', 'verified']);
+
+
+
+
+
+
+Route::middleware('auth')->group(function () {
+  Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+
+  Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+
+  Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+});
+
+require __DIR__ . '/auth.php';
