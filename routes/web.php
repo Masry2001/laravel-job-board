@@ -17,22 +17,24 @@ Route::get('/contact', ContactController::class)->name('contact');
 
 
 // Blog Routes
-Route::controller(PostController::class)->group(function () {
-  Route::get('/blog', 'index')->name('blog.index')->middleware(['auth', 'verified']);
-  Route::get('/blog/create', 'create')->name('blog.create')->middleware(['auth', 'verified', 'OnlyAdmins']);
-  Route::post('/blog', 'store')->name('blog.store')->middleware(['auth', 'verified', 'OnlyAdmins']);
-  Route::get('/blog/{post}', 'show')->name('blog.show')->middleware(['auth', 'verified']);
-  Route::get('/blog/{post}/edit', 'edit')->name('blog.edit')->middleware(['auth', 'verified', 'OnlyAdmins']);
-  Route::put('/blog/{post}', 'update')->name('blog.update')->middleware(['auth', 'verified', 'OnlyAdmins']);
-  Route::delete('/blog/{post}', 'destroy')->name('blog.destroy')->middleware(['auth', 'verified', 'OnlyAdmins']);
-});
-//Route::resource('blog', PostController::class)->parameters(['blog' => 'post'])->middleware(['auth', 'verified']);
+Route::middleware(['auth:web', 'verified'])->group(function () {
 
-Route::middleware(['auth', 'verified', 'OnlyAdmins'])
-  ->group(function () {
-    Route::resource('blog', PostController::class)
-      ->only(['create', 'store', 'edit', 'update', 'destroy']);
+  // Public blog routes
+  Route::get('/blog', [PostController::class, 'index'])->name('blog.index');
+  Route::get('/blog/{post}', [PostController::class, 'show'])->name('blog.show');
+
+  // Admin protected routes
+  Route::middleware('OnlyAdmins')->group(function () {
+    Route::get('/blog/create', [PostController::class, 'create'])->name('blog.create');
+    Route::post('/blog', [PostController::class, 'store'])->name('blog.store');
+    Route::get('/blog/{post}/edit', [PostController::class, 'edit'])->name('blog.edit');
+    Route::put('/blog/{post}', [PostController::class, 'update'])->name('blog.update');
+    Route::delete('/blog/{post}', [PostController::class, 'destroy'])->name('blog.destroy');
   });
+
+});
+
+
 // this will make the route model binding use 'post' instead of 'blog' for the {post} parameter
 // /blog/{post} instead of /blog/{blog}
 
@@ -70,12 +72,12 @@ Route::resource('tags', TagController::class)->middleware(['auth', 'verified']);
 
 Route::get('/dashboard', function () {
   return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+})->middleware(['auth:web', 'verified'])->name('dashboard');
 
 
 
 
-Route::middleware('auth')->group(function () {
+Route::middleware('auth:web')->group(function () {
   Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
 
   Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
