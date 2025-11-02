@@ -23,7 +23,7 @@ Route::middleware(['auth:web', 'verified'])->group(function () {
 
     // Admin only (Delete)
     Route::middleware('RoleMiddleware:admin')->group(function () {
-      Route::delete('/blog/{post}', 'destroy')->name('blog.destroy');
+      Route::delete('/blog/{post}', 'destroy')->name('blog.destroy')->can('delete', 'post');
     });
 
 
@@ -31,8 +31,8 @@ Route::middleware(['auth:web', 'verified'])->group(function () {
     Route::middleware('RoleMiddleware:editor,admin')->group(function () {
       Route::get('/blog/create', 'create')->name('blog.create');
       Route::post('/blog', 'store')->name('blog.store');
-      Route::get('/blog/{post}/edit', 'edit')->name('blog.edit');
-      Route::put('/blog/{post}', 'update')->name('blog.update');
+      Route::get('/blog/{post}/edit', 'edit')->name('blog.edit')->can('update', 'post');
+      Route::put('/blog/{post}', 'update')->name('blog.update')->can('update', 'post');
     });
 
     // Viewer + Editor + Admin (Read-only)

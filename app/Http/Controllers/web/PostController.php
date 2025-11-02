@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\BlogPostRequestValidator;
 use App\Models\Post;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 
 class PostController extends Controller
 {
@@ -57,10 +58,8 @@ class PostController extends Controller
      */
     public function edit(Post $post)
     {
-        // check if the current user can edit
-        if ($post->user_id != auth()->id()) {
-            return redirect('/blog/' . $post->id)->with('error', 'You are not authorized to edit this post');
-        }
+
+        //Gate::authorize('update', $post);
         return view('post.edit', ['title' => 'Edit Post', 'post' => $post]);
 
     }
