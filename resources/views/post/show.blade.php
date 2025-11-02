@@ -2,7 +2,11 @@
 
   <h3 class="text-3xl">Single Post Page</h3>
   <hr class="my-4">
-
+  @if (session('error'))
+    <h3 class="text-2xl text-red-800 mb-4 bg-red-50 px-3 py-2">
+      {{ session('error') }}
+    </h3>
+  @endif
   <div class="flex items-center mb-4">
     <a href="#" class="text-blue-500">
       <h2 class="text-2xl font-semibold">Title: {{ $post->title }}</h2>
@@ -21,7 +25,7 @@
     @endif
   </div>
 
-  <h2 class="text-gray-600">Author: {{ $post->author }}</h2>
+  <h2 class="text-gray-600">Author: {{ $post->user->name }}</h2>
   <h2>Body: {{ $post->body }}</h2>
   <hr class="my-4 text-gray-300">
 
@@ -34,7 +38,7 @@
 
     <div class="mt-2 grid grid-cols-1 gap-x-6 gap-y-4 sm:grid-cols-6">
       <div class="sm:col-span-3">
-        <x-form-input name="author" label="Author" inputId="comment-author" />
+        <x-form-input name="author" label="Author" inputId="comment-author" :value="auth()->user()->name" readonly />
       </div>
 
       <div class="col-span-full">

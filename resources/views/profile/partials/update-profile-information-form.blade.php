@@ -7,6 +7,11 @@
         <p class="mt-1 text-sm text-gray-600">
             {{ __("Update your account's profile information and email address.") }}
         </p>
+
+        {{-- show the role to the user --}}
+        <p class="mt-1 text-md text-gray-900">
+            {{ __('Role: ') . auth()->user()->role }}
+        </p>
     </header>
 
     <form id="send-verification" method="post" action="{{ route('verification.send') }}">

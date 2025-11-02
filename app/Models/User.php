@@ -31,6 +31,7 @@ class User extends Authenticatable implements JWTSubject
         'name',
         'email',
         'password',
+        'role',
     ];
 
     /**
@@ -76,4 +77,16 @@ class User extends Authenticatable implements JWTSubject
     {
         return [];
     }
+
+    // user has posts
+    public function posts()
+    {
+        return $this->hasMany(Post::class, 'user_id', 'id');
+    }
+
+    // user has comments
+    // public function comments()
+    // {
+    //     return $this->hasMany(Comment::class, 'user_id', 'id');
+    // }
 }

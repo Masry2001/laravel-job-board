@@ -12,7 +12,7 @@
 
     <div class="mt-2 grid grid-cols-1 gap-x-6 gap-y-4 sm:grid-cols-6">
       <div class="sm:col-span-3">
-        <x-form-input name="author" label="Author" inputId="comment-author" :value="$comment->author" />
+        <x-form-input name="author" label="Author" inputId="comment-author" :value="$comment->author" readonly />
       </div>
 
       <div class="col-span-full">

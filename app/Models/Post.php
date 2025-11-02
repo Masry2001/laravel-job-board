@@ -27,6 +27,7 @@ class Post extends Model
         'body',
         'author',
         'published',
+        'user_id'
     ];
 
     protected $guarded = [
@@ -34,7 +35,10 @@ class Post extends Model
     ];
 
 
-
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id', 'id');
+    }
 
     public function comments()
     {

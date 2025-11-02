@@ -24,8 +24,9 @@ class PostFactory extends Factory
             'id' => Str::uuid()->toString(),
             'title' => $this->faker->sentence(),
             'body' => $this->faker->text(),
-            'author' => $this->faker->name(),
             'published' => $this->faker->boolean(),
+            'user_id' => \App\Models\User::where('role', 'editor')->inRandomOrder()->value('id'),
+
         ];
     }
 }

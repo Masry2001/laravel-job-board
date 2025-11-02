@@ -30,7 +30,6 @@ class BlogPostRequestValidator extends FormRequest
                 'max:255',
                 Rule::unique('posts')->ignore($this->post),
             ],
-            'author' => 'bail|required|max:255',
             'body' => 'bail|required|max:999'
         ];
     }

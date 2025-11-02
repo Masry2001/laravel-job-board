@@ -9,7 +9,8 @@
       </div>
 
       <div class="sm:col-span-3">
-        <x-form-input name="author" label="Author" inputId="author" autocomplete="given-name" />
+        <x-form-input name="author" label="Author" inputId="author" autocomplete="given-name"
+          :value="auth()->user()->name" readonly />
       </div>
 
       <div class="col-span-full">

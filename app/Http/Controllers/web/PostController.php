@@ -34,7 +34,7 @@ class PostController extends Controller
 
         $post = new Post();
         $post->title = $request->input('title');
-        $post->author = $request->input('author');
+        $post->user_id = auth()->id();
         $post->body = $request->input('body');
         $post->published = $request->has('published');
         $post->save();
@@ -57,6 +57,10 @@ class PostController extends Controller
      */
     public function edit(Post $post)
     {
+        // check if the current user can edit
+        if ($post->user_id != auth()->id()) {
+            return redirect('/blog/' . $post->id)->with('error', 'You are not authorized to edit this post');
+        }
         return view('post.edit', ['title' => 'Edit Post', 'post' => $post]);
 
     }
@@ -68,7 +72,6 @@ class PostController extends Controller
     {
 
         $post->title = $request->input('title');
-        $post->author = $request->input('author');
         $post->body = $request->input('body');
         $post->published = $request->has('published');
         $post->save();

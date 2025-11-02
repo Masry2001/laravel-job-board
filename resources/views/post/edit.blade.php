@@ -15,7 +15,7 @@
 
           <!-- author -->
           <div class="sm:col-span-3">
-            <x-form-input name="author" label="Author" inputId="author" :value="$post->author" />
+            <x-form-input name="author" label="Author" inputId="author" :value="$post->user->name" readonly />
 
           </div>
 

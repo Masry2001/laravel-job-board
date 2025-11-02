@@ -8,6 +8,7 @@
       {{ session('success') }}
     </h3>
   @endif
+
   @foreach ($posts as $post)
     <div class="flex items-center mb-4">
       <a href="/blog/{{ $post->id }}" class="text-blue-500 hover:underline">
@@ -28,7 +29,7 @@
         </div>
       @endif
     </div>
-    <h2 class="text-gray-600">Author: {{ $post->author }}</h2>
+    <h2 class="text-gray-600">Author: {{ $post->user->name }}</h2>
     <h2>Body: {{ $post->body }}</h2>
     {{-- Check if post has comments --}}
     @if ($post->comments->count() > 0)

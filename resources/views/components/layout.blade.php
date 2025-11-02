@@ -1,4 +1,7 @@
 @props(['title' => 'Default Title', 'post' => null])
+@php
+  $role = auth()->user()->role ?? 'viewer';
+@endphp
 
 <!DOCTYPE html>
 <html lang="en">
@@ -54,7 +57,7 @@
 
                       <x-dropdown-link :href="route('logout')"
                         onclick="event.preventDefault();
-                                                                                                                                                this.closest('form').submit();">
+                                                                                                                                                                                                this.closest('form').submit();">
                         {{ __('Log Out') }}
                       </x-dropdown-link>
                     </form>
@@ -153,19 +156,29 @@
           <h1 class="text-3xl font-bold tracking-tight text-gray-900">{{ $title }}</h1>
           <div>
             @if (Route::is('blog.index'))
-              <a href="{{ route('blog.create') }}"
-                class="inline-flex items-center px-4 py-2 text-sm font-semibold text-white bg-indigo-600 rounded-md hover:bg-indigo-500 transition-colors duration-300">
-                Create Post
-              </a>
+              @if ($role == 'editor' || $role == 'admin')
+
+                <a href="{{ route('blog.create') }}"
+                  class="inline-flex items-center px-4 py-2 text-sm font-semibold text-white bg-indigo-600 rounded-md hover:bg-indigo-500 transition-colors duration-300">
+                  Create Post
+                </a>
+              @endif
             @endif
 
             @if (Route::is('blog.show') && $post)
 
+              @if ($role == 'editor' || $role == 'admin')
 
-              <x-action-link href="{{ route('blog.edit', $post->id) }}" color="indigo" text="Edit Post" />
+                @if($post->user_id == auth()->id() || $role == 'admin')
+                  <x-action-link href="{{ route('blog.edit', $post->id) }}" color="indigo" text="Edit Post" />
+                @endif
 
-              <x-form-delete-btn action="{{ route('blog.destroy', $post->id) }}" text="Delete Post"
-                confirmMessage="Do You Want To Delete This Post" />
+              @endif
+
+              @if($role == 'admin')
+                <x-form-delete-btn action="{{ route('blog.destroy', $post->id) }}" text="Delete Post"
+                  confirmMessage="Do You Want To Delete This Post" />
+              @endif
             @endif
           </div>
 

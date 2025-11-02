@@ -22,7 +22,6 @@ class CommentRequestValidator extends FormRequest
     public function rules(): array
     {
         return [
-            'author' => 'bail|required|max:255',
             'content' => 'bail|required|max:999'
         ];
     }
